@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Politique de confidentialité – Who Is The Spy</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; max-width: 720px; margin: 0 auto; padding: 24px; line-height: 1.6; color: #141828; background: #fff; }
+    h1 { font-size: 1.6rem; } h2 { font-size: 1.1rem; margin-top: 28px; }
+    .lang { margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <p class="lang"><a href="#fr">Français</a> · <a href="#en">English</a></p>
+
+  <section id="fr">
+    <h1>Politique de confidentialité – Who Is The Spy</h1>
+    <p>Dernière mise à jour : 25 novembre 2026.</p>
+    <h2>Données collectées</h2>
+    <p>Who Is The Spy ne collecte, n'envoie et ne stocke aucune donnée personnelle. Aucun compte n'est requis et aucun identifiant publicitaire n'est utilisé.</p>
+    <h2>Stockage local</h2>
+    <p>Vos réglages (langue, thème, sons, vibrations, nombre de joueurs, catégories choisies) sont enregistrés uniquement sur votre appareil, dans le stockage local de l'application. Ils ne quittent jamais votre téléphone.</p>
+    <h2>Services tiers</h2>
+    <p>L'application n'utilise aucun service tiers, aucune publicité et aucun outil d'analyse.</p>
+    <h2>Autorisations</h2>
+    <p>L'application demande uniquement l'accès au vibreur, pour le retour haptique pendant la partie. Vous pouvez le désactiver dans les réglages.</p>
+    <h2>Enfants</h2>
+    <p>L'application ne collecte aucune donnée, y compris auprès des enfants.</p>
+    <h2>Contact</h2>
+    <p>Pour toute question : <a href="mailto:amine.apps.studio@gmail.com">amine.apps.studio@gmail.com</a>.</p>
+    <h2>Crédits</h2>
+    <p>Drapeaux et icônes : Twemoji, sous licence CC-BY 4.0.</p>
+  </section>
+
+  <section id="en" hidden>
+    <h1>Privacy Policy – Who Is The Spy</h1>
+    <p>Last updated: 25 November 2026.</p>
+    <h2>Data collected</h2>
+    <p>Who Is The Spy does not collect, send or store any personal data. No account is required and no advertising identifier is used.</p>
+    <h2>Local storage</h2>
+    <p>Your settings (language, theme, sounds, vibration, number of players, chosen categories) are stored only on your device, in the app's local storage. They never leave your phone.</p>
+    <h2>Third-party services</h2>
+    <p>The app uses no third-party service, no advertising and no analytics tool.</p>
+    <h2>Permissions</h2>
+    <p>The app only requests access to the vibration motor, for haptic feedback during a game. You can turn it off in the settings.</p>
+    <h2>Children</h2>
+    <p>The app collects no data, including from children.</p>
+    <h2>Contact</h2>
+    <p>For any question: <a href="mailto:amine.apps.studio@gmail.com">amine.apps.studio@gmail.com</a>.</p>
+    <h2>Credits</h2>
+    <p>Flags and icons: Twemoji, licensed under CC-BY 4.0.</p>
+  </section>
+
+  <script>
+    function showSection() {
+      var h = location.hash === '#en' ? 'en' : 'fr';
+      document.getElementById('fr').hidden = h !== 'fr';
+      document.getElementById('en').hidden = h !== 'en';
+    }
+    window.addEventListener('hashchange', showSection);
+    showSection();
+  </script>
+</body>
+</html>

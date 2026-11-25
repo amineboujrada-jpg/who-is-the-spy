@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0f1d" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+  <title>Who Is The Spy</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Applique le thème enregistré avant l'affichage pour éviter un flash.
+    (function () {
+      try {
+        var th = localStorage.getItem('wits-theme');
+        if (th === 'light' || th === 'dark') document.documentElement.setAttribute('data-theme', th);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+<main class="app">
+
+  <!-- Menu -->
+  <section id="menu" class="screen active" aria-labelledby="menu-title">
+    <header class="top">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18"/><path d="M6 9V5h12v4"/><circle cx="12" cy="15" r="5"/><path d="M12 12v0"/></svg>
+      </div>
+      <h1 id="menu-title" data-i="title">Who Is The Spy</h1>
+      <p class="subtitle" data-i="subtitle"></p>
+      <button class="icon-btn" id="btn-settings" data-i-aria="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </header>
+
+    <div class="card">
+      <label class="field">
+        <span data-i="players"></span>
+        <span class="stepper">
+          <button type="button" id="players-minus" aria-label="-">−</button>
+          <output id="players-val">5</output>
+          <button type="button" id="players-plus" aria-label="+">+</button>
+        </span>
+      </label>
+      <label class="field">
+        <span data-i="spies"></span>
+        <span class="stepper">
+          <button type="button" id="spies-minus" aria-label="-">−</button>
+          <output id="spies-val">1</output>
+          <button type="button" id="spies-plus" aria-label="+">+</button>
+        </span>
+      </label>
+      <label class="field">
+        <span data-i="timer"></span>
+        <select id="timer-select" aria-label="timer"></select>
+      </label>
+    </div>
+
+    <div class="card">
+      <h2 data-i="categories"></h2>
+      <div id="categories" class="chips"></div>
+    </div>
+
+    <p id="menu-error" class="error" role="alert" hidden></p>
+    <button class="primary big" id="btn-start" data-i="start"></button>
+    <p class="credits" data-i="credits"></p>
+  </section>
+
+  <!-- Distribution des cartes, un joueur à la fois -->
+  <section id="reveal" class="screen" aria-live="polite">
+    <div class="center">
+      <p class="pass-msg" id="reveal-pass"></p>
+      <div class="flip" id="flip">
+        <div class="flip-inner">
+          <button class="viewfinder face front" id="btn-show"></button>
+          <div class="secret-card face back" id="secret-card">
+            <p class="secret-label" id="secret-label"></p>
+            <p class="secret-word" id="secret-word"></p>
+            <p class="secret-hint" id="secret-hint"></p>
+          </div>
+        </div>
+      </div>
+      <button class="secondary big" id="btn-hide" hidden></button>
+    </div>
+  </section>
+
+  <!-- Discussion -->
+  <section id="discuss" class="screen">
+    <div class="center">
+      <p data-i="discuss"></p>
+      <p class="timer" id="timer-display" aria-live="off">00:00</p>
+      <p class="label" data-i="timeLeft"></p>
+      <button class="primary big" id="btn-to-vote" data-i="toVote"></button>
+    </div>
+  </section>
+
+  <!-- Vote -->
+  <section id="vote" class="screen">
+    <h2 class="center-title" data-i="voteTitle"></h2>
+    <ul id="vote-list" class="list"></ul>
+  </section>
+
+  <!-- Résultat -->
+  <section id="result" class="screen">
+    <div class="center">
+      <div class="result-banner" id="result-banner">
+        <p class="result-title" id="result-title"></p>
+        <p id="result-detail"></p>
+      </div>
+      <div class="reveal-row"><p class="k" id="result-word-k"></p><p class="v" id="result-word"></p></div>
+      <div class="reveal-row"><p class="k" id="result-spies-k"></p><p class="v" id="result-spies"></p></div>
+      <button class="primary big" id="btn-again"></button>
+      <button class="secondary big" id="btn-menu-result"></button>
+    </div>
+  </section>
+
+  <!-- Réglages -->
+  <dialog id="settings-dialog" aria-labelledby="settings-title">
+    <h2 id="settings-title" data-i="settings"></h2>
+    <label class="field">
+      <span data-i="language"></span>
+      <select id="lang-select">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="ar">العربية</option>
+      </select>
+    </label>
+    <label class="field">
+      <span data-i="theme"></span>
+      <select id="theme-select">
+        <option value="auto" data-i="themeAuto"></option>
+        <option value="light" data-i="themeLight"></option>
+        <option value="dark" data-i="themeDark"></option>
+      </select>
+    </label>
+    <label class="field">
+      <span data-i="sound"></span>
+      <input type="checkbox" id="sound-toggle">
+    </label>
+    <label class="field">
+      <span data-i="vibration"></span>
+      <input type="checkbox" id="vibe-toggle">
+    </label>
+    <button class="primary" id="btn-close-settings" data-i="close"></button>
+  </dialog>
+
+</main>
+<script src="i18n.js"></script>
+<script src="words.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
