@@ -1,0 +1,83 @@
+name: Android build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Prépare le dossier web
+        run: |
+          rm -rf build && mkdir -p build/www
+          cp -r index.html style.css i18n.js words.js app.js sw.js manifest.webmanifest confidentialite.html icons build/www/
+          rm -f build/www/icons/icon-512.png build/www/icons/maskable-512.png build/www/icons/apple-touch-icon.png
+
+      - name: Installe Capacitor 8
+        working-directory: build
+        run: |
+          npm init -y > /dev/null
+          npm install @capacitor/core@8 @capacitor/cli@8 @capacitor/android@8
+
+      - name: Initialise le projet Android
+        working-directory: build
+        run: |
+          npx cap init "Who Is The Spy" com.pixelatlas.whoisthespy --web-dir www
+          npx cap add android
+          rm -rf android/app/src/main/res/mipmap-anydpi-v26
+          cp -r ../android-icons/mipmap-* android/app/src/main/res/
+          # Cible Android 16 (API 36), obligatoire pour les nouvelles apps
+          grep -rl "targetSdk" android --include=*.gradle | xargs sed -i -E 's/targetSdk(Version)?( *=)? *[0-9]+/targetSdk\1\2 36/g'
+          # Permission vibreur
+          python3 - <<'PY'
+          p = "android/app/src/main/AndroidManifest.xml"
+          s = open(p, encoding="utf-8").read()
+          if "android.permission.VIBRATE" not in s:
+              s = s.replace("<application", '<uses-permission android:name="android.permission.VIBRATE" />\n    <application', 1)
+              open(p, "w", encoding="utf-8").write(s)
+          PY
+          # Numéros de version : versionCode = numéro du run
+          sed -i -E "s/versionCode [0-9]+/versionCode ${{ github.run_number }}/" android/app/build.gradle
+          sed -i -E "s/versionName \"[^\"]*\"/versionName \"1.0.${{ github.run_number }}\"/" android/app/build.gradle
+          npx cap sync android
+
+      - name: Compile (APK de test et AAB non signé)
+        working-directory: build/android
+        run: ./gradlew assembleDebug bundleRelease --no-daemon
+
+      - name: Publie l'APK de test dans Releases
+        uses: softprops/action-gh-release@v2
+        continue-on-error: true
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Who Is The Spy 1.0.${{ github.run_number }}
+          files: build/android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Dépose l'AAB non signé sur la branche builds
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/builds
+          cp build/android/app/build/outputs/bundle/release/app-release.aab /tmp/builds/
+          cd /tmp/builds
+          git init -q
+          git checkout -q -b builds
+          git add app-release.aab
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "AAB non signé, run ${{ github.run_number }}"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" builds
