@@ -50,7 +50,6 @@ const STRINGS = {
     cat_lieux: "Lieux",
     cat_animaux: "Animaux",
     cat_vehicules: "Véhicules",
-    credits: "Drapeaux et icônes : Twemoji (CC-BY 4.0)"
   },
   en: {
     title: "Who Is The Spy",
@@ -102,7 +101,6 @@ const STRINGS = {
     cat_lieux: "Places",
     cat_animaux: "Animals",
     cat_vehicules: "Vehicles",
-    credits: "Flags and icons: Twemoji (CC-BY 4.0)"
   },
   es: {
     title: "Who Is The Spy",
@@ -154,7 +152,6 @@ const STRINGS = {
     cat_lieux: "Lugares",
     cat_animaux: "Animales",
     cat_vehicules: "Vehículos",
-    credits: "Banderas e iconos: Twemoji (CC-BY 4.0)"
   },
   ar: {
     title: "Who Is The Spy",
@@ -206,7 +203,6 @@ const STRINGS = {
     cat_lieux: "أماكن",
     cat_animaux: "حيوانات",
     cat_vehicules: "مركبات",
-    credits: "الأعلام والأيقونات: Twemoji (CC-BY 4.0)"
   }
 };
 

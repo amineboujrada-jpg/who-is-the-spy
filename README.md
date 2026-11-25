@@ -10,6 +10,3 @@ Jeu de déduction sociale à jouer à plusieurs sur un seul téléphone. Un ou p
 
 Site statique, sans dépendance. Ouvrir `index.html` via un serveur local (ex. `python3 -m http.server`).
 
-## Crédits
-
-Drapeaux et icônes : Twemoji, CC-BY 4.0.
